@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>Test page for YQL Helper</title>
+
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  </head>
+  <body>
+
+
+    <div class="container">
+      <h1>Test page for YQL Helper</h1>
+      <div class="span12"></div>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="jquery.yqlhelper.js"></script>
+    <script type="text/javascript">
+      $(function () {
+        var t = $(".span12").empty();
+
+        var statement = "select * from atom where url='https://github.com/blog.atom'";
+        $.YQL.query(statement).then(function (data) {
+          $("<h2/>").text("from github.com/blog.atom").appendTo(t);
+          var r = data.query.results;
+          var ul = $("<ul/>");
+          $.each(r.entry, function () {
+            $("<li/>").append(this.title).appendTo(ul);
+          });
+          ul.appendTo(t);
+        });
+
+        statement = "select * from html where url='http://googleblog.blogspot.com' and xpath='//h2[@class=\"title\"]/a'";
+        $.YQL.query(statement, {type:"xml"}).then(function (data) {
+          $("<h2/>").text("from googleblog.blogspot.com").appendTo(t);
+          var ul = $("<ul/>");
+          $("a", data).each(function () {
+            $("<li/>").append($(this).text()).appendTo(ul);
+          });
+          ul.appendTo(t);
+        });
+      });
+    </script>
+  </body>
+</html>
