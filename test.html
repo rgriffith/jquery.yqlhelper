@@ -37,9 +37,10 @@
         statement = "select * from html where url='http://googleblog.blogspot.com' and xpath='//h2[@class=\"title\"]/a'";
         $.YQL.query(statement, {type:"xml"}).then(function (data) {
           $("<h2/>").text("from googleblog.blogspot.com").appendTo(t);
+          var r = data.results;
           var ul = $("<ul/>");
-          $("a", data).each(function () {
-            $("<li/>").append($(this).text()).appendTo(ul);
+          $.each(r, function () {
+            $("<li/>").append(this).appendTo(ul);
           });
           ul.appendTo(t);
         });

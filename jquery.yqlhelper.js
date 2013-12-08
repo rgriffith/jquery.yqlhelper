@@ -49,10 +49,14 @@
         url: url,
         data: data,
         cache: true,
-        dataType: type,
-        success: dfr.resolve,
+        dataType: "jsonp",
+        jsonpCallback: "cbfunc",
         error: dfr.reject
       });
+
+      cbfunc = function(data) {
+        dfr.resolve(data);
+      };
 
       return dfr.promise();
     }
